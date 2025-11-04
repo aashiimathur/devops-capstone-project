@@ -1,0 +1,151 @@
+[init : remove] Removing all files from /workspace/source ...
+
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + CHECKOUT_DIR=/workspace/output/
+[clone : clone] + '[' true '=' true ]
+[clone : clone] + cleandir
+[clone : clone] + '[' -d /workspace/output/ ]
+[clone : clone] + rm -rf '/workspace/output//*'
+[clone : clone] + rm -rf '/workspace/output//.[!.]*'
+[clone : clone] + rm -rf '/workspace/output//..?*'
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + git config --global --add safe.directory /workspace/output
+[clone : clone] + /ko-app/git-init '-url=https://github.com/aashiimathur/devops-capstone-project.git' '-revision=cd-pipeline' '-refspec=' '-path=/workspace/output/' '-sslVerify=true' '-submodules=true' '-depth=1' '-sparseCheckoutDirectories='
+[clone : clone] {"level":"info","ts":1762277359.8812969,"caller":"git/git.go:176","msg":"Successfully cloned https://github.com/aashiimathur/devops-capstone-project.git @ acbbef4f33db0f59536e7921007127282d13b658 (grafted, HEAD, origin/cd-pipeline) in path /workspace/output/"}
+[clone : clone] {"level":"info","ts":1762277364.5538027,"caller":"git/git.go:215","msg":"Successfully initialized and updated submodules in path /workspace/output/"}
+[clone : clone] + cd /workspace/output/
+[clone : clone] + git rev-parse HEAD
+[clone : clone] + RESULT_SHA=acbbef4f33db0f59536e7921007127282d13b658
+[clone : clone] + EXIT_CODE=0
+[clone : clone] + '[' 0 '!=' 0 ]
+[clone : clone] + git log -1 '--pretty=%ct'
+[clone : clone] + RESULT_COMMITTER_DATE=1762277226
+[clone : clone] + printf '%s' 1762277226
+[clone : clone] + printf '%s' acbbef4f33db0f59536e7921007127282d13b658
+[clone : clone] + printf '%s' https://github.com/aashiimathur/devops-capstone-project.git
+
+[lint : flake8] Collecting Werkzeug==2.1.2
+[lint : flake8]   Downloading Werkzeug-2.1.2-py3-none-any.whl (224 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 224.9/224.9 kB 3.3 MB/s eta 0:00:00
+[lint : flake8] Collecting SQLAlchemy==1.4.46
+[lint : flake8]   Downloading SQLAlchemy-1.4.46-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.6 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 24.3 MB/s eta 0:00:00
+[lint : flake8] Collecting Flask==2.1.2
+[lint : flake8]   Downloading Flask-2.1.2-py3-none-any.whl (95 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 95.2/95.2 kB 41.7 MB/s eta 0:00:00
+[lint : flake8] Collecting Flask-SQLAlchemy==2.5.1
+[lint : flake8]   Downloading Flask_SQLAlchemy-2.5.1-py2.py3-none-any.whl (17 kB)
+[lint : flake8] Collecting psycopg2==2.9.3
+[lint : flake8]   Downloading psycopg2-2.9.3.tar.gz (380 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 380.6/380.6 kB 74.8 MB/s eta 0:00:00
+[lint : flake8]   Preparing metadata (setup.py): started
+[lint : flake8]   Preparing metadata (setup.py): finished with status 'error'
+[lint : flake8]   error: subprocess-exited-with-error
+[lint : flake8]   
+[lint : flake8]   × python setup.py egg_info did not run successfully.
+[lint : flake8]   │ exit code: 1
+[lint : flake8]   ╰─> [23 lines of output]
+[lint : flake8]       running egg_info
+[lint : flake8]       creating /tmp/pip-pip-egg-info-7y_sds89/psycopg2.egg-info
+[lint : flake8]       writing /tmp/pip-pip-egg-info-7y_sds89/psycopg2.egg-info/PKG-INFO
+[lint : flake8]       writing dependency_links to /tmp/pip-pip-egg-info-7y_sds89/psycopg2.egg-info/dependency_links.txt
+[lint : flake8]       writing top-level names to /tmp/pip-pip-egg-info-7y_sds89/psycopg2.egg-info/top_level.txt
+[lint : flake8]       writing manifest file '/tmp/pip-pip-egg-info-7y_sds89/psycopg2.egg-info/SOURCES.txt'
+[lint : flake8]       
+[lint : flake8]       Error: pg_config executable not found.
+[lint : flake8]       
+[lint : flake8]       pg_config is required to build psycopg2 from source.  Please add the directory
+[lint : flake8]       containing pg_config to the $PATH or specify the full executable path with the
+[lint : flake8]       option:
+[lint : flake8]       
+[lint : flake8]           python setup.py build_ext --pg-config /path/to/pg_config build ...
+[lint : flake8]       
+[lint : flake8]       or with the pg_config option in 'setup.cfg'.
+[lint : flake8]       
+[lint : flake8]       If you prefer to avoid building psycopg2 from source, please install the PyPI
+[lint : flake8]       'psycopg2-binary' package instead.
+[lint : flake8]       
+[lint : flake8]       For further information please check the 'doc/src/install.rst' file (also at
+[lint : flake8]       <https://www.psycopg.org/docs/install.html>).
+[lint : flake8]       
+[lint : flake8]       [end of output]
+[lint : flake8]   
+[lint : flake8]   note: This error originates from a subprocess, and is likely not a problem with pip.
+[lint : flake8] error: metadata-generation-failed
+[lint : flake8] 
+[lint : flake8] × Encountered error while generating package metadata.
+[lint : flake8] ╰─> See above for output.
+[lint : flake8] 
+[lint : flake8] note: This is an issue with the package mentioned above, not pip.
+[lint : flake8] hint: See above for details.
+[lint : flake8] 
+[lint : flake8] [notice] A new release of pip is available: 23.0.1 -> 25.3
+[lint : flake8] [notice] To update, run: pip install --upgrade pip
+
+[tests : nosetests] Requirement already satisfied: pip in /usr/local/lib/python3.9/site-packages (23.0.1)
+[tests : nosetests] Collecting pip
+[tests : nosetests]   Downloading pip-25.3-py3-none-any.whl (1.8 MB)
+[tests : nosetests]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 28.4 MB/s eta 0:00:00
+[tests : nosetests] Requirement already satisfied: wheel in /usr/local/lib/python3.9/site-packages (0.44.0)
+[tests : nosetests] Collecting wheel
+[tests : nosetests]   Downloading wheel-0.45.1-py3-none-any.whl (72 kB)
+[tests : nosetests]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.5/72.5 kB 32.5 MB/s eta 0:00:00
+[tests : nosetests] Installing collected packages: wheel, pip
+[tests : nosetests]   Attempting uninstall: wheel
+[tests : nosetests]     Found existing installation: wheel 0.44.0
+[tests : nosetests]     Uninstalling wheel-0.44.0:
+[tests : nosetests]       Successfully uninstalled wheel-0.44.0
+[tests : nosetests]   Attempting uninstall: pip
+[tests : nosetests]     Found existing installation: pip 23.0.1
+[tests : nosetests]     Uninstalling pip-23.0.1:
+[tests : nosetests]       Successfully uninstalled pip-23.0.1
+[tests : nosetests] Successfully installed pip-25.3 wheel-0.45.1
+[tests : nosetests] WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+[tests : nosetests]   error: subprocess-exited-with-error
+[tests : nosetests]   
+[tests : nosetests]   × Getting requirements to build wheel did not run successfully.
+[tests : nosetests]   │ exit code: 1
+[tests : nosetests]   ╰─> [34 lines of output]
+[tests : nosetests]       /tmp/pip-build-env-rkxpgrfx/overlay/lib/python3.9/site-packages/setuptools/dist.py:759: SetuptoolsDeprecationWarning: License classifiers are deprecated.
+[tests : nosetests]       !!
+[tests : nosetests]       
+[tests : nosetests]               ********************************************************************************
+[tests : nosetests]               Please consider removing the following classifiers in favor of a SPDX license expression:
+[tests : nosetests]       
+[tests : nosetests]               License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
+[tests : nosetests]       
+[tests : nosetests]               See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+[tests : nosetests]               ********************************************************************************
+[tests : nosetests]       
+[tests : nosetests]       !!
+[tests : nosetests]         self._finalize_license_expression()
+[tests : nosetests]       running egg_info
+[tests : nosetests]       writing psycopg2.egg-info/PKG-INFO
+[tests : nosetests]       writing dependency_links to psycopg2.egg-info/dependency_links.txt
+[tests : nosetests]       writing top-level names to psycopg2.egg-info/top_level.txt
+[tests : nosetests]       
+[tests : nosetests]       Error: pg_config executable not found.
+[tests : nosetests]       
+[tests : nosetests]       pg_config is required to build psycopg2 from source.  Please add the directory
+[tests : nosetests]       containing pg_config to the $PATH or specify the full executable path with the
+[tests : nosetests]       option:
+[tests : nosetests]       
+[tests : nosetests]           python setup.py build_ext --pg-config /path/to/pg_config build ...
+[tests : nosetests]       
+[tests : nosetests]       or with the pg_config option in 'setup.cfg'.
+[tests : nosetests]       
+[tests : nosetests]       If you prefer to avoid building psycopg2 from source, please install the PyPI
+[tests : nosetests]       'psycopg2-binary' package instead.
+[tests : nosetests]       
+[tests : nosetests]       For further information please check the 'doc/src/install.rst' file (also at
+[tests : nosetests]       <https://www.psycopg.org/docs/install.html>).
+[tests : nosetests]       
+[tests : nosetests]       [end of output]
+[tests : nosetests]   
+[tests : nosetests]   note: This error originates from a subprocess, and is likely not a problem with pip.
+[tests : nosetests] ERROR: Failed to build 'psycopg2' when getting requirements to build wheel
+

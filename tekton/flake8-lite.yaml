@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: flake8-lite
+spec:
+  workspaces:
+    - name: source
+  steps:
+    - name: run-flake8
+      image: python:3.9
+      workingDir: /workspace/source
+      script: |
+        #!/bin/bash
+        pip install --upgrade pip
+        pip install flake8
+        echo "Running flake8 lint check..."
+        flake8 . --count --max-line-length=120 --statistics
