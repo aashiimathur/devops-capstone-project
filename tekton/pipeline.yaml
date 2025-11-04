@@ -4,7 +4,7 @@
 #   - flake8
 #   - nose
 #   - buildah
-#   - kubernetes-actions (for oc apply or kubectl apply)
+#   - openshift-client
 #
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
@@ -20,7 +20,7 @@ spec:
       description: Git branch to clone
       default: main
     - name: build-image
-      description: Image name to build and push (e.g. image-registry.openshift-image-registry.svc:5000/namespace/app:latest)
+      description: Image name to build and push (e.g. image-registry.openshift-image-registry.svc:5000/namespace/accounts:latest)
     - name: deploy-manifest
       description: Path to the Kubernetes deployment YAML
       default: deploy/deployment.yaml
@@ -49,7 +49,7 @@ spec:
       runAfter:
         - init
 
-    # Run linting
+    # Linting step
     - name: lint
       runAfter:
         - clone
@@ -68,7 +68,7 @@ spec:
             - --max-line-length=127
             - --statistics
 
-    # Run tests using nose
+    # Testing step
     - name: tests
       runAfter:
         - clone
@@ -98,16 +98,22 @@ spec:
         - name: IMAGE
           value: $(params.build-image)
 
-    # Deploy to Kubernetes / OpenShift
+    # Deploy to OpenShift using openshift-client
     - name: deploy
       runAfter:
         - build
       taskRef:
-        name: kubernetes-actions
+        name: openshift-client
+        kind: ClusterTask
       workspaces:
-        - name: source
+        - name: manifest-dir
           workspace: pipeline-workspace
       params:
-        - name: script
+        - name: SCRIPT
           value: |
-            kubectl apply -f $(params.deploy-manifest)
+            echo "Updating manifest..."
+            sed -i "s|IMAGE_NAME_HERE|$(params.build-image)|g" deploy/deployment.yaml
+            cat deploy/deployment.yaml
+            echo "Deploying to OpenShift..."
+            oc apply -f deploy/
+            oc get pods -l app=accounts
