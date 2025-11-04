@@ -67,6 +67,20 @@ spec:
             - --max-line-length=127
             - --statistics
 
+    - name: tests
+      taskRef:
+        name: nose
+      runAfter:
+        - clone
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+      params:
+        - name: database_uri
+          value: "sqlite:///test.db"
+        - name: args
+          value: "-v --with-spec --spec-color"
+
     # Build container image using Buildah
     - name: build-image
       workspaces:
