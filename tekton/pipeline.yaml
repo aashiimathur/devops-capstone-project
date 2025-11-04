@@ -2,6 +2,7 @@
 # This pipeline needs the following tasks from Tekton Hub:
 #   - git-clone
 #   - flake8
+#   - nose
 #   - buildah
 #   - kubernetes-actions (for oc apply or kubectl apply)
 #
@@ -18,8 +19,8 @@ spec:
     - name: branch
       description: Git branch to clone
       default: main
-    - name: image-name
-      description: Image name to build and push (e.g. us.icr.io/myspace/myapp)
+    - name: build-image
+      description: Image name to build and push (e.g. image-registry.openshift-image-registry.svc:5000/namespace/app:latest)
     - name: deploy-manifest
       description: Path to the Kubernetes deployment YAML
       default: deploy/deployment.yaml
@@ -67,11 +68,12 @@ spec:
             - --max-line-length=127
             - --statistics
 
+    # Run tests using nose
     - name: tests
-      taskRef:
-        name: nose
       runAfter:
         - clone
+      taskRef:
+        name: nose
       workspaces:
         - name: source
           workspace: pipeline-workspace
@@ -82,28 +84,30 @@ spec:
           value: "-v --with-spec --spec-color"
 
     # Build container image using Buildah
-    - name: build-image
+    - name: build
+      runAfter:
+        - lint
+        - tests
+      taskRef:
+        name: buildah
+        kind: ClusterTask
       workspaces:
         - name: source
           workspace: pipeline-workspace
-      taskRef:
-        name: buildah
       params:
         - name: IMAGE
-          value: $(params.image-name)
-      runAfter:
-        - lint
+          value: $(params.build-image)
 
     # Deploy to Kubernetes / OpenShift
     - name: deploy
+      runAfter:
+        - build
+      taskRef:
+        name: kubernetes-actions
       workspaces:
         - name: source
           workspace: pipeline-workspace
-      taskRef:
-        name: kubernetes-actions
       params:
         - name: script
           value: |
             kubectl apply -f $(params.deploy-manifest)
-      runAfter:
-        - build-image
