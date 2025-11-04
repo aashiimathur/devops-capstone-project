@@ -1,38 +1,86 @@
 #
-# This pipeline needs the following tasks from Tekton Hub
+# This pipeline needs the following tasks from Tekton Hub:
 #   - git-clone
 #   - flake8
+#   - buildah
+#   - kubernetes-actions (for oc apply or kubectl apply)
 #
----
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
-metadata:  
+metadata:
   name: cd-pipeline
 spec:
   workspaces:
     - name: pipeline-workspace
   params:
     - name: repo-url
+      description: URL of the Git repository
     - name: branch
+      description: Git branch to clone
       default: main
+    - name: image-name
+      description: Image name to build and push (e.g. us.icr.io/myspace/myapp)
+    - name: deploy-manifest
+      description: Path to the Kubernetes deployment YAML
+      default: deploy/deployment.yaml
+
   tasks:
+    # Clean up workspace
     - name: init
       workspaces:
         - name: source
-          workspace: pipeline-workspace          
+          workspace: pipeline-workspace
       taskRef:
         name: cleanup
 
+    # Clone repository
     - name: clone
       workspaces:
         - name: output
-          workspace: pipeline-workspace          
+          workspace: pipeline-workspace
       taskRef:
         name: git-clone
       params:
-      - name: url
-        value: $(params.repo-url)
-      - name: revision
-        value: $(params.branch)
+        - name: url
+          value: $(params.repo-url)
+        - name: revision
+          value: $(params.branch)
       runAfter:
         - init
+
+    # Run linting
+    - name: lint
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+      taskRef:
+        name: flake8-lite
+      runAfter:
+        - clone
+
+    # Build container image using Buildah
+    - name: build-image
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+      taskRef:
+        name: buildah
+      params:
+        - name: IMAGE
+          value: $(params.image-name)
+      runAfter:
+        - lint
+
+    # Deploy to Kubernetes / OpenShift
+    - name: deploy
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+      taskRef:
+        name: kubernetes-actions
+      params:
+        - name: script
+          value: |
+            kubectl apply -f $(params.deploy-manifest)
+      runAfter:
+        - build-image
